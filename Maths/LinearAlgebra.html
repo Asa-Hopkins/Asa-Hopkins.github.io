@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0"/>
+    <title>Asa Hopkins' Website</title>
+    <meta name="description" content="A bunch of random knowledge across STEM"/>
+    <link rel="canonical" href=""/>
+    <link rel="stylesheet" href="../style.css">
+
+  </head>
+  <body>
+    <nav>
+      <a href="../index.html">Home</a> |
+      <a href="../posts.html">Posts</a>
+    </nav>
+    <hr>
+
+    <header>
+      <h2>Linear Algebra</h2>
+    </header>
+
+    This isn't esoteric at all, but I wanted to start with something simple so I could focus more on the style and formatting.
+
+    <h3>Motivation </h3>
+
+    Despite its simplicity, Linear Algebra finds a lot of real world use. As a physicist who works with quantum computers, Linear Algebra is vital, as it is the most natural language to describe quantum mechanics. The state of a quantum system is a vector, and the way it evolves over time is described with a linear operator. Whilst this is dear to my heart (paycheck), Linear Algebra does much more.
+    <p>
+    There is a self-sustaining cycle in the development of computer processors. Computers are exceptionally fast at doing Linear Algebra, which means that the fastest way to solve many problems is to rewrite them as Linear Algebra. As a result, when new processors and supercomputers are built, the performance metrics are largely <a href="https://www.top500.org/project/linpack/">"How fast can it do Linear Algebra?"</a>. This often means that when you want your computer to do something fast, you'd best do it with Linear Algebra.
+    </p>
+
+    Some examples of this:
+    <ul>
+      <li> Solving Partial Differential Equations with Finite Element Methods 
+        <ul> 
+          <li> <a href="https://en.wikipedia.org/wiki/Maxwell%27s_equations"> Maxwell's laws </a> for electromagnetism</li>
+          <li> The <a href="https://en.wikipedia.org/wiki/Navier%E2%80%93Stokes_equations"> Navier-Stokes </a> or similar equations for fluid simulation </li>
+          <li> The <a href="https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_equation"> Black-Scholes </a> equation for options pricing in finance</li>
+        </ul>
+      </li>
+      <li> Similar to above, solving large Ordinary Differential Equations such as Newton's laws of motion in <a href="https://en.wikipedia.org/wiki/Molecular_dynamics">molecular dynamics</a>, used for chemical synthesis and protein folding.
+      <li> Computer graphics and image processing. Many basic operations like rotation, reflection, shrinking or growing, can be described and calculated very easily with Linear Algebra.
+      <li> Anything to do with Machine Learning or AI, "model weights" are just gigantic matrices </li>
+      <li> Linear regression (or any regression really) </li>
+      <li> Likely many other areas that I'm not familiar with </li>
+    </ul>
+
+    Many of the above examples are useful to engineers who want to simulate their electronic or mechanical devices, either before building them or to verify they're working correctly.
+    It's worth noting that these applications aren't purely scientific, though, as the same techniques get applied for generating flames, explosions, water etc. in films and games. Hopefully you are convinced that Linear Algebra is worth learning, and thankfully it's not too difficult either.
+
+    <p> By the end of this first page, you will be able to find a polynomial that passes through a given set of points. I do this a lot in my work, I'll take a function like sin(x) and find a polynomial that approximates it, because polynomials are much nicer to work with.
+     My <a href="https://github.com/Asa-Hopkins/ApproxTools">ApproxTools </a> repository is designed for doing this task quickly, but there is also <a href="https://www.chebfun.org/"> ChebFun </a> which is much more feature-rich. </p>
+
+    <h3>Introduction</h3>
+    There are many equivalent descriptions of Linear Algebra, and we shall start with discussing simultaneous linear equations. Consider the following:
+    <pre>
+2x + 3y = 5
+3x + 2y = 5</pre>
+    What makes an equation linear? It's the fact our variables only get multiplied by constants. If there were squaring, or multiplying variables together, or applying trigonometric functions, it wouldn't be linear. We now want to manipulate these two equations to find the solution, but what are the valid ways to manipulate it? 
+    <p>Firstly, we can write the equations in any order we like. This clearly does not change the answer. </p>
+    <p>Secondly, we can multiply an equation by any number except 0. If we multiply by 0, the equation becomes 0 = 0, which is always true and tells us nothing about x and y. This lets us rewrite the equations with the coefficient of x as 1, like this:</p>
+
+<pre>
+      3     5 
+ x + ╶─╴y =╶─╴
+      2     2 
+
+      2     5 
+ x + ╶─╴y =╶─╴
+      3     3 
+</pre>
+    In general, we can apply any operation to both sides of an equation and get a new correct equation. Since both sides are equal, the result of the operation on both sides must be equal. 
+    <p>For linear equations, we want to always keep things linear, so the final manipulation is the adding of one equation to another. This means the two left hand sides (LHSs) add together to give a new LHS, and the two right hand sides (RHSs) add together to give a new RHS. We can take a shortcut, and combine the second and third manipulations, allowing us to add a (possibly negative) multiple of one equation to another.</p>
+    <p>Let us subtract our second equation from our first equation: </p>
+    <pre>
+      3     5 
+ x + ╶─╴y =╶─╴
+      2     2 
+
+  5      5 
+ ╶─╴y = ╶─╴
+  6      6 
+</pre>
+
+    Now our system is as good as solved. Rescale the second equation to get y = 1, and then substitute that into the first equation to get x = 1 too. This technique is called back-substitution.
+
+    <p> Simple enough. There are other manipulations, such as moving adding/subtracting terms to move them from the LHS to the RHS, or when we used substitution to find x using y, but this is never strictly necessary, despite being a common method taught. It is useful for the following proof though. </p>
+    <p> As a general rule, a system of n variables needs n equations to be solved. To show this, you can manipulate the first equation to 
+    <pre> x = ay + bz + ... , </pre>
+    writing x in terms of the other variables. You can substitute that into all the other equations, so now x doesn't appear in any of them. You can repeat this for every variable, using one equation to eliminate one variable. At the end, only one variable remains, and its value is obvious from the remaining equation. Back-substitution then solves the rest of the system. </p>
+
+    <h3> Introducing Matrices </h3>
+
+    <p> As systems gets larger, with more equations and variables, it becomes useful to be more systematic in our approach. This is where matrices come in. Only the coefficients in our equations really matter, the rest is redundant information so long as we always write our variables in the same order. We can therefore compile all the coefficients into a 2D grid called a matrix, like follows: </p>
+
+    <pre>
+<strong>A</strong> = ⎛ 2 3 5 ⎞
+    ⎝ 3 2 5 ⎠</pre>
+
+    Matrices are typically labelled with capital letters in bold font, or a double underline when handwriting. It is also common to draw a bar between the LHS and RHS, called the augmented form, like this:
+    <pre>
+<strong>A</strong> = ⎛ 2 3 | 5 ⎞
+    ⎝ 3 2 | 5 ⎠</pre>
+    The matrix <strong>A</strong> contains all the information of our original system of equations. Applied to a matrix, our three valid ways of manipulating equations are row swapping, row scaling, and adding one row to another.
+
+    <p> I will now explain the general algorithm for solving linear systems called Gaussian Elimination. For now, I will assume there's the same number of variables as equations. The algorithm can be modified for other amounts of equations, but I want to keep it simple for now.</p>
+
+    <ol>
+      <li> Let n=1, representing which row we're currently working on. Different disciplines will say n=0 to mean the first row, it's best to be ready for either.</li>
+      <li> If the n'th entry of row n is 0, search down the column for a row that doesn't contain a 0 in that entry and swap it with the n'th row. <br> If all rows contain a 0, go to step 10. </li>
+      <li> Add a multiple of the n'th row to every row below it, such that the rows below all contain a 0 in the n'th entry </li>
+      <li> Increment n by 1. If you've reached the bottom of the matrix, continue to step 5. Otherwise, go to step 2.</li>
+      <li> The matrix is now in "upper triangular" form, the bottom-left corner is all filled with 0's. The rest of the algorithm is back-substitution.</li>
+      <li> Scale row n so that its n'th entry is 1. </li>
+      <li> Add a multiple of the n'th row to every row above it, such that the rows above all contain a 0 in the n'th entry. </li>
+      <li> Decrease n by 1. If you've reached the top of the matrix, continue to step 9. Otherwise, go to step 6. </li>
+      <li> We are done, and the system is solved. The rightmost column, representing the RHS of the equation, contains the values of our variables, unless you visited step 10 at any point. </li>
+      <hr>
+      <li> If you reached this step, the algorithm has failed and the system has infinitely many solutions. It is possible to skip to step 4 and to continue the algorithm, with the end result describing all the possible solutions. </li>
+      <li> If you reached this step, the algorithm has failed and the system has no solutions. There were too many equations and they simply can't all be true simultaneously.
+    </ol>
+
+    <p> That's a lot of steps, but they aren't that tricky, which is why computers are very well suited to Linear Algebra calculations. I have provided <a href="./LinearAlgebra.py">Python code</a> that performs Gaussian Elimination. This code also contains the later examples </p>
+
+    <p> For now, let's solve a three variable system by hand with Gaussian Elimination </p>
+
+<table border="0" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top" width="20%">
+      <pre>
+<strong>A</strong> = ⎛ 1 2 1 | 4 ⎞
+    | 2 5 2 | 9 |
+    ⎝ 1 4 7 | 6 ⎠</pre>
+    </td>
+    <td valign="top">
+      <p> This augmented matrix represents our system. The first row doesn't have a 0, so we can skip to step 3.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top" width="20%">
+      <pre>
+⎛ 1 2 1 | 4 ⎞
+| 0 1 0 | 1 |
+⎝ 0 2 6 | 2 ⎠</pre>
+    </td>
+    <td valign="top">
+      <p>We add -2 times row 1 to row 2, and -1 times row 1 to row 3, to give us 0s.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top" width="20%">
+      <pre>
+⎛ 1 2 1 | 4 ⎞
+| 0 1 0 | 1 |
+⎝ 0 0 6 | 0 ⎠</pre>
+    </td>
+    <td valign="top">
+      <p>Step 4 sets n = 2, and again we can skip to step 3. We add -2 times row 2 to row 3</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top" width="20%">
+      <pre>
+⎛ 1 2 1 | 4 ⎞
+| 0 1 0 | 1 |
+⎝ 0 0 1 | 0 ⎠</pre>
+    </td>
+    <td valign="top">
+      <p>Step 4 sets n = 3, and we've reached the bottom, so we move to step 6. We scale row 3 so the 3'rd entry is 1. </p>
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top" width="20%">
+      <pre>
+⎛ 1 2 0 | 4 ⎞
+| 0 1 0 | 1 |
+⎝ 0 0 1 | 0 ⎠</pre>
+    </td>
+    <td valign="top">
+      <p>For step 7, we add 0 times row 3 to row 2, and -1 times row 3 to row 1. </p>
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top" width="20%">
+      <pre>
+⎛ 1 0 0 | 2 ⎞
+| 0 1 0 | 1 |
+⎝ 0 0 1 | 0 ⎠</pre>
+    </td>
+    <td valign="top">
+      <p>Step 8 sets n = 2, and the entry is already 1 so we can move to step 7. we add -2 times row 2 to row 1. </p>
+    </td>
+  </tr>
+
+  <tr>
+    <td valign="top" width="20%">
+      <pre>
+⎛ 1 0 0 | 2 ⎞
+| 0 1 0 | 1 |
+⎝ 0 0 1 | 0 ⎠</pre>
+    </td>
+    <td valign="top">
+      <p>We're done! x = 2, y = 1 and z = 0 is the solution to our original system. </p>
+    </td>
+  </tr>
+
+</table>
+
+    <p> Now for polynomial fitting. This may seem complicated, but it really does just boil down to simultanous linear equations. Let's take a quadratic function for now:
+    <pre>p(x) = ax²+bx+c</pre>
+    <p> This may look non-linear, but a, b and c are our unknown variables, and it is perfectly linear in those. Let's say we want p(x) = sin(x) when x = -1, 0 and 1. This gives the equations:</p>
+    <pre>p(-1) = a - b + c = sin(-1) = -sin(1)
+p(0) = c = sin(0) = 0
+p(1) = a + b + c = sin(1)</pre>
+
+<p> This is easy to solve even without Gaussian Elimination. We have c = 0 immediately, add the two equations to see that a = 0, and then b = sin(1) follows. </p>
+<p> Here's what our function looks like compared to sin(x) between x=-1 and x=1: </p>
+
+<figure>
+  <img src="./LinearAlgebraFig1.png" alt="For a straight line, it matches quite well. Better is possible, however." width="400">
+</figure>
+
+<p>It is possible to do slightly better, go see the page on <a href="./ApproximationTheory">Approximation Theory</a> once it exists. </p>
+<p>For a more interesting example, let's now fit a degree-6 polynomial to the function cos(√x) at x=0,1,2,3,4,5,6 </p>
+<p>I'll only write out one equation, the full matrix, and the solution. Beyond 3x3, you should really rely on a computer for these calculations. </p>
+<pre>p(x) = ax⁶+bx⁵+cx⁴+dx³+ex²+fx+g
+p(2) = 64a + 32b + 16c + 8d + 4e + 2f + g = cos(√2)</pre>
+
+The full matrix is
+<pre>
+array([[    0,     0,     0,     0,     0,     0,     1, cos(0) ],
+       [    1,     1,     1,     1,     1,     1,     1, cos(1) ],
+       [   64,    32,    16,     8,     4,     2,     1, cos(√2)],
+       [  729,   243,    81,    27,     9,     3,     1, cos(√3)],
+       [ 4096,  1024,   256,    64,    16,     4,     1, cos(2) ],
+       [15625,  3125,   625,   125,    25,     5,     1, cos(√5)],
+       [46656,  7776,  1296,   216,    36,     6,     1, cos(√6)]])
+</pre>
+and was (mostly) generated by the <code>np.vander</code> function in Python. Matrices following this pattern are called Vandermonde matrices, which is why the function is called that. The solution is then:
+
+<pre>
+a =  1.85909939e-09
+b = -2.73701336e-07
+c =  2.47937915e-05
+d = -1.38887175e-03
+e =  4.16666481e-02
+f = -4.99999992e-01
+g =  1.00000000e+00
+</pre>
+
+<p>If I drew the graph of this p(x) against the original function, it'd be indistiguishable. Instead, I've plotted the difference between them. I've also plotted the best possible polynomial for comparison, which is found by choosing better sampling points. Bad sampling points can break the fit entirely. </p>
+
+
+<figure>
+  <img src="./LinearAlgebraFig2.png" alt="The best polynomial has a max error of around 3e-10, whilst our one has a max error of around 1e-9" width="400">
+</figure>
+
+<hr>
+    <footer>
+      <p>Website source code on <a href="https://github.com/Asa-Hopkins/Asa-Hopkins.github.io/tree/main">GitHub</a>.</p>
+    </footer>
+  </body>
+</html>
+
+<!-- I've retained the copyright notice from the original website I forked-->
+<!-- Copyright (C) 2021  Guilherme Pangnotta -->
+<!-- License: https://github.com/setetres/evenbettermotherfuckingwebsite/blob/master/LICENSE -->

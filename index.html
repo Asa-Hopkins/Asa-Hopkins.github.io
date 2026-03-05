@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0"/>
+    <title>Asa Hopkins' Website</title>
+    <meta name="description" content="A bunch of random knowledge across STEM"/>
+    <link rel="canonical" href=""/>
+    <link rel="stylesheet" href="style.css">
+
+  </head>
+  <body>
+    <nav>
+      <a href="./index.html">Home</a> |
+      <a href="./posts.html">Posts</a>
+    </nav>
+    <hr>
+
+    <header>
+      <h1>Asa Hopkins' Website</h1>
+    </header>
+    <h2>About me:</h2>
+    <ul>
+      <li>Final year PhD Student with <a href="https://kendon.info/viv/">Viv Kendon</a> at the University of Strathclyde</li>
+      <li>Developing quantum algorithms based on <a href="https://arxiv.org/abs/2511.01312">continuous time quantum walks</a></li>
+      <li>Also developing a <a href="https://github.com/Asa-Hopkins/MultiStageQW">quantum simulator</a> that's optimised for quantum walks
+      <li>Studied Theoretical Physics + Applied Mathematics (TPAM) at the University of Birmingham </li>
+      <li>Yes I should be writing my thesis right now</li>
+      <li>Maintaining a website counts towards some of my PGCert credits</li>
+    </ul>
+
+    <p>Over the course of my MSci and PhD, I have gathered a lot of esoteric knowledge which I want to gather into one place and try to make more digestible.</p>
+
+    <h2>Goals for this website:</h2>
+    <ul>
+      <li>Be very lightweight. Nobody likes autoplaying animations that slow your machine to a crawl</li>
+      <li>Work on every device and browser. I'm not a fan of the Firefox/Chromium duopoly, sadly the vast majority of websites don't work with any other option. I want this website to work on alternate browsers like Dillo and Lynx. I will be using these two browsers as test cases for functionality. I hope it works with Ladybird too but that's not in my repos.</li>
+      <li>Be accessible to a wide audience to the extent possible. I feel like some topics are actually much easier than they're made out to be.</li>
+      <li>Contain everything obscure I know that might be useful to someone.</li>
+    </ul>
+    
+    As a result of the above goals, I will be experimenting with <a href="https://github.com/dxddxx/TeXicode/tree/main">TeXicode</a>, which renders mathematics written in LaTeX in unicode. This should have wide support on alternate browsers that don't support MathML. I will also try having a PDF version available of heavily mathematical pages, to not compromise on quality.
+
+    Here's an example:
+
+<pre>
+ ⌠¹     ⎡ x⁴ ⎤¹  1 
+ │ x³dx=⎢╶──╴⎥ =╶─╴
+ ⌡₀     ⎣ 4  ⎦₀  4 
+</pre>
+
+Looks pretty good for pure unicode, and I've confirmed it's legible on both Lynx and Dillo. On Lynx I had to enable a locale-based unicode set to get a reasonable output. I will be including PNG figures when graphs are necessary. I wanted SVGs but dillo's SVG support 
+
+<h2> Now go and read my <a href="./posts.html" style="color:#ff6347;"> posts </a></h2>
+    <hr>
+
+
+    <footer>
+      <p>Website source code on <a href="https://github.com/Asa-Hopkins/Asa-Hopkins.github.io/tree/main">GitHub</a>.</p>
+    </footer>
+  </body>
+</html>
+
+<!-- I've retained the copyright notice from the original website I forked-->
+<!-- Copyright (C) 2021  Guilherme Pangnotta -->
+<!-- License: https://github.com/setetres/evenbettermotherfuckingwebsite/blob/master/LICENSE -->
