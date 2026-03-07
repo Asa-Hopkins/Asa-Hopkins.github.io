@@ -9,6 +9,7 @@ nav a { color: #000000; text-decoration: none; }
 nav a:hover { text-decoration: underline; }
 
 pre {
+    font-size: 20px;
     color: #000000;
     background: #ffffff;
     padding: 15px;
@@ -36,4 +37,12 @@ figure {
     align-items: center;
     margin: 2rem auto;
     text-align: center;
+}
+
+/* for inline maths */
+in {
+    font-family: monospace;
+    background: #ffffff;
+    padding: 2px 4px;
+    border-radius: 3px;
 }

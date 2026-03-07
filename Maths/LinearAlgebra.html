@@ -58,7 +58,7 @@
 3x + 2y = 5</pre>
     What makes an equation linear? It's the fact our variables only get multiplied by constants. If there were squaring, or multiplying variables together, or applying trigonometric functions, it wouldn't be linear. We now want to manipulate these two equations to find the solution, but what are the valid ways to manipulate it? 
     <p>Firstly, we can write the equations in any order we like. This clearly does not change the answer. </p>
-    <p>Secondly, we can multiply an equation by any number except 0. If we multiply by 0, the equation becomes 0 = 0, which is always true and tells us nothing about x and y. This lets us rewrite the equations with the coefficient of x as 1, like this:</p>
+    <p>Secondly, we can multiply an equation by any number except <in>0</in>. If we multiply by <in>0</in>, the equation becomes <in>0 = 0</in>, which is always true and tells us nothing about <in>x</in> and <in>y</in>. This lets us rewrite the equations with the coefficient of <in>x</in> as <in>1</in>, like this:</p>
 
 <pre>
       3     5 
@@ -82,12 +82,12 @@
   6      6 
 </pre>
 
-    Now our system is as good as solved. Rescale the second equation to get y = 1, and then substitute that into the first equation to get x = 1 too. This technique is called back-substitution.
+    Now our system is as good as solved. Rescale the second equation to get <in>y = 1</in>, and then substitute that into the first equation to get <in>x = 1</in> too. This technique is called back-substitution.
 
-    <p> Simple enough. There are other manipulations, such as moving adding/subtracting terms to move them from the LHS to the RHS, or when we used substitution to find x using y, but this is never strictly necessary, despite being a common method taught. It is useful for the following proof though. </p>
+    <p> Simple enough. There are other manipulations, such as moving adding/subtracting terms to move them from the LHS to the RHS, or when we used substitution to find <in>x</in> using <in>y</in>, but this is never strictly necessary, despite being a common method taught. It is useful for the following proof though. </p>
     <p> As a general rule, a system of n variables needs n equations to be solved. To show this, you can manipulate the first equation to 
     <pre> x = ay + bz + ... , </pre>
-    writing x in terms of the other variables. You can substitute that into all the other equations, so now x doesn't appear in any of them. You can repeat this for every variable, using one equation to eliminate one variable. At the end, only one variable remains, and its value is obvious from the remaining equation. Back-substitution then solves the rest of the system. </p>
+    writing <in>x</in> in terms of the other variables. You can substitute that into all the other equations, so now <in>x</in> doesn't appear in any of them. You can repeat this for every variable, using one equation to eliminate one variable. At the end, only one variable remains, and its value is obvious from the remaining equation. Back-substitution then solves the rest of the system. </p>
 
     <h3> Introducing Matrices </h3>
 
@@ -101,22 +101,24 @@
     <pre>
 <strong>A</strong> = ⎛ 2 3 | 5 ⎞
     ⎝ 3 2 | 5 ⎠</pre>
-    The matrix <strong>A</strong> contains all the information of our original system of equations. Applied to a matrix, our three valid ways of manipulating equations are row swapping, row scaling, and adding one row to another.
+    The matrix <in><strong>A</strong></in> contains all the information of our original system of equations. Applied to a matrix, our three valid ways of manipulating equations are row swapping, row scaling, and adding one row to another.
+
+    <h3> Gaussian Elimination </h3>
 
     <p> I will now explain the general algorithm for solving linear systems called Gaussian Elimination. For now, I will assume there's the same number of variables as equations. The algorithm can be modified for other amounts of equations, but I want to keep it simple for now.</p>
 
     <ol>
-      <li> Let n=1, representing which row we're currently working on. Different disciplines will say n=0 to mean the first row, it's best to be ready for either.</li>
-      <li> If the n'th entry of row n is 0, search down the column for a row that doesn't contain a 0 in that entry and swap it with the n'th row. <br> If all rows contain a 0, go to step 10. </li>
-      <li> Add a multiple of the n'th row to every row below it, such that the rows below all contain a 0 in the n'th entry </li>
-      <li> Increment n by 1. If you've reached the bottom of the matrix, continue to step 5. Otherwise, go to step 2.</li>
-      <li> The matrix is now in "upper triangular" form, the bottom-left corner is all filled with 0's. The rest of the algorithm is back-substitution.</li>
-      <li> Scale row n so that its n'th entry is 1. </li>
-      <li> Add a multiple of the n'th row to every row above it, such that the rows above all contain a 0 in the n'th entry. </li>
-      <li> Decrease n by 1. If you've reached the top of the matrix, continue to step 9. Otherwise, go to step 6. </li>
+      <li> Let <in>n=1</in>, representing which row we're currently working on. Different disciplines will say <in>n=0</in> to mean the first row, it's best to be ready for either.</li>
+      <li> If the <in>n</in>'th entry of row <in>n</in> is <in>0</in>, search down the column for a row that doesn't contain a <in>0</in> in that entry and swap it with the <in>n</in>'th row. <br> If all rows contain a <in>0</in>, go to step 10. </li>
+      <li> Add a multiple of the <in>n</in>'th row to every row below it, such that the rows below all contain a <in>0</in> in the <in>n</in>'th entry </li>
+      <li> Increment <in>n</in> by <in>1</in>. If the <in>n</in>'th row is the bottom row of the matrix, continue to step 5. Otherwise, go to step 2.</li>
+      <li> The matrix is now in "upper triangular" form, the bottom-left corner is all filled with <in>0</in>'s. The rest of the algorithm is back-substitution.</li>
+      <li> Scale row <in>n</in> so that its <in>n</in>'th entry is <in>1</in>. </li>
+      <li> Add a multiple of the <in>n</in>'th row to every row above it, such that the rows above all contain a <in>0</in> in the <in>n</in>'th entry. </li>
+      <li> Decrease <in>n</in> by <in>1</in>. If you've reached the top of the matrix, continue to step 9. Otherwise, go to step 6. </li>
       <li> We are done, and the system is solved. The rightmost column, representing the RHS of the equation, contains the values of our variables, unless you visited step 10 at any point. </li>
       <hr>
-      <li> If you reached this step, the algorithm has failed and the system has infinitely many solutions. It is possible to skip to step 4 and to continue the algorithm, with the end result describing all the possible solutions. </li>
+      <li> If you reached this step, the algorithm has failed and the system has infinitely many solutions. It is possible to skip to step 4 and continue the algorithm, with the end result describing all the possible solutions. </li>
       <li> If you reached this step, the algorithm has failed and the system has no solutions. There were too many equations and they simply can't all be true simultaneously.
     </ol>
 
@@ -133,7 +135,7 @@
     ⎝ 1 4 7 | 6 ⎠</pre>
     </td>
     <td valign="top">
-      <p> This augmented matrix represents our system. The first row doesn't have a 0, so we can skip to step 3.</p>
+      <p> This augmented matrix represents our system. The first row doesn't have a <in>0</in>, so we can skip to step 3.</p>
     </td>
   </tr>
 
@@ -145,7 +147,7 @@
 ⎝ 0 2 6 | 2 ⎠</pre>
     </td>
     <td valign="top">
-      <p>We add -2 times row 1 to row 2, and -1 times row 1 to row 3, to give us 0s.</p>
+      <p>We add <in>-2</in> times row 1 to row 2, and <in>-1</in> times row 1 to row 3, to give us <in>0</in>s.</p>
     </td>
   </tr>
 
@@ -157,7 +159,7 @@
 ⎝ 0 0 6 | 0 ⎠</pre>
     </td>
     <td valign="top">
-      <p>Step 4 sets n = 2, and again we can skip to step 3. We add -2 times row 2 to row 3</p>
+      <p>Step 4 sets <in>n = 2</in>, and again we can skip to step 3. We add <in>-2</in> times row 2 to row 3</p>
     </td>
   </tr>
 
@@ -169,7 +171,7 @@
 ⎝ 0 0 1 | 0 ⎠</pre>
     </td>
     <td valign="top">
-      <p>Step 4 sets n = 3, and we've reached the bottom, so we move to step 6. We scale row 3 so the 3'rd entry is 1. </p>
+      <p>Step 4 sets <in>n = 3</in>, and we've reached the bottom, so we move to step 6. We scale row 3 so the 3'rd entry is <in>1</in>. </p>
     </td>
   </tr>
 
@@ -181,7 +183,7 @@
 ⎝ 0 0 1 | 0 ⎠</pre>
     </td>
     <td valign="top">
-      <p>For step 7, we add 0 times row 3 to row 2, and -1 times row 3 to row 1. </p>
+      <p>For step 7, we add <in>0</in> times row 3 to row 2, and <in>-1</in> times row 3 to row 1. </p>
     </td>
   </tr>
 
@@ -193,7 +195,7 @@
 ⎝ 0 0 1 | 0 ⎠</pre>
     </td>
     <td valign="top">
-      <p>Step 8 sets n = 2, and the entry is already 1 so we can move to step 7. we add -2 times row 2 to row 1. </p>
+      <p>Step 8 sets <in>n = 2</in>, and the entry is already 1 so we can move to step 7. we add <in>-2</in> times row 2 to row 1. </p>
     </td>
   </tr>
 
@@ -205,28 +207,30 @@
 ⎝ 0 0 1 | 0 ⎠</pre>
     </td>
     <td valign="top">
-      <p>We're done! x = 2, y = 1 and z = 0 is the solution to our original system. </p>
+      <p>We're done! <in>x = 2</in>, <in>y = 1</in> and <in>z = 0</in> is the solution to our original system. </p>
     </td>
   </tr>
 
 </table>
 
-    <p> Now for polynomial fitting. This may seem complicated, but it really does just boil down to simultanous linear equations. Let's take a quadratic function for now:
+    <h3> Polynomial Fitting </h3>
+
+    <p> This may seem complicated, but it really does just boil down to simultanous linear equations. Let's take a quadratic function for now:
     <pre>p(x) = ax²+bx+c</pre>
-    <p> This may look non-linear, but a, b and c are our unknown variables, and it is perfectly linear in those. Let's say we want p(x) = sin(x) when x = -1, 0 and 1. This gives the equations:</p>
+    <p> This may look non-linear, but <in>a</in>, <in>b</in> and <in>c</in> are our unknown variables, and it is perfectly linear in those. Let's say we want <in>p(x) = sin(x)</in> when <in>x = -1</in>, <in>0</in> and <in>1</in>. This gives the equations:</p>
     <pre>p(-1) = a - b + c = sin(-1) = -sin(1)
 p(0) = c = sin(0) = 0
 p(1) = a + b + c = sin(1)</pre>
 
-<p> This is easy to solve even without Gaussian Elimination. We have c = 0 immediately, add the two equations to see that a = 0, and then b = sin(1) follows. </p>
-<p> Here's what our function looks like compared to sin(x) between x=-1 and x=1: </p>
+<p> This is easy to solve even without Gaussian Elimination. We have <in>c = 0</in> immediately, add the two equations to see that <in>a = 0</in>, and then <in>b = sin(1)</in> follows. </p>
+<p> Here's what our function looks like compared to <in>sin(x)</in> between <in>x=-1</in> and <in>x=1</in>: </p>
 
 <figure>
-  <img src="./LinearAlgebraFig1.png" alt="For a straight line, it matches quite well. Better is possible, however." width="400">
+  <img src="./LinearAlgebraFig1.png" alt="For a straight line, it matches quite well. Better is possible, however." width="600">
 </figure>
 
 <p>It is possible to do slightly better, go see the page on <a href="./ApproximationTheory">Approximation Theory</a> once it exists. </p>
-<p>For a more interesting example, let's now fit a degree-6 polynomial to the function cos(√x) at x=0,1,2,3,4,5,6 </p>
+<p>For a more interesting example, let's now fit a degree-6 polynomial to the function <in>cos(√x)</in> at <in>x=0,1,2,3,4,5,6</in> </p>
 <p>I'll only write out one equation, the full matrix, and the solution. Beyond 3x3, you should really rely on a computer for these calculations. </p>
 <pre>p(x) = ax⁶+bx⁵+cx⁴+dx³+ex²+fx+g
 p(2) = 64a + 32b + 16c + 8d + 4e + 2f + g = cos(√2)</pre>
@@ -253,11 +257,11 @@ f = -4.99999992e-01
 g =  1.00000000e+00
 </pre>
 
-<p>If I drew the graph of this p(x) against the original function, it'd be indistiguishable. Instead, I've plotted the difference between them. I've also plotted the best possible polynomial for comparison, which is found by choosing better sampling points. Bad sampling points can break the fit entirely. </p>
+<p>If I drew the graph of this <in>p(x)</in> against the original function, it'd be indistiguishable. Instead, I've plotted the difference between them. I've also plotted the best possible polynomial for comparison, which is found by choosing better sampling points. Bad sampling points can break the fit entirely, check out <a href="https://en.wikipedia.org/wiki/Runge%27s_phenomenon">Runge's Phenomenon</a> for an example. </p>
 
 
 <figure>
-  <img src="./LinearAlgebraFig2.png" alt="The best polynomial has a max error of around 3e-10, whilst our one has a max error of around 1e-9" width="400">
+  <img src="./LinearAlgebraFig2.png" alt="The best polynomial has a max error of around 3e-10, whilst our one has a max error of around 1e-9" width="600">
 </figure>
 
 <hr>

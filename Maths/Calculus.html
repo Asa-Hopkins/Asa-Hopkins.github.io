@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0"/>
+    <title>Asa Hopkins' Website</title>
+    <meta name="description" content="A bunch of random knowledge across STEM"/>
+    <link rel="canonical" href=""/>
+    <link rel="stylesheet" href="../style.css">
+
+  </head>
+  <body>
+    <nav>
+      <a href="../index.html">Home</a> |
+      <a href="../posts.html">Posts</a>
+    </nav>
+    <hr>
+
+    <header>
+      <h2>Calculus</h2>
+    </header>
+
+    <h3>Motivation</h3>
+    Many of the examples in <a href="./LinearAlgebra">Linear Algebra</a> are relevant here too, but I want to take a different approach to motivating calculus.
+    <p>I think the most powerful ability of calculus is mathematical modelling.
+    This is the skill of taking something in real life, describing it with mathematics, and then using the mathematics to predict what will happen in the future or in alternate scenarios. </p>
+    <p>For example, if NASA want to launch a rocket, they need to know how much fuel it needs. Taking too much fuel is expensive, taking too little fuel is catastrophic. It is unfeasible to launch multiple missions to figure it out by trial-and-error too.
+    What they will do instead is create a mathematical model from measurements on the ground. They'll measure the weather at different altitudes, the rocket's thrust, the Earth's gravity, etc. and then use the tools of calculus to predict how much fuel is needed. 
+    They'll then simulate what can go wrong, and how much extra fuel those scenarios would need, all without actually endagering their astronauts.</p>
+
+    <p>Mathematical modelling is the foundation of physics, and I'd say most other sciences too. The physical laws that we learn are our best mathematical model of the world, and we constantly use them to simulate, predict and ultimately guide our decision making.
+     Mathematical models predict the weather, predict new medicines, predict new materials (e.g for solar panels or smaller transistors), create wings so planes can fly, and allow a computer to fly that plane. </p>
+
+    <p>We have some groundwork to cover to get to mathematical modelling. After this page you'll be able to calculate derivatives of some simple functions, and find where they take a maximum or minimum.
+    This skill is called optimisation, and we often want to optimise things. We want to minimise time taken for a journey, or maximise profit of a business</p>
+
+    <h3>Introduction</h3>
+    Calculus mainly covers two topics, differential calculus and integral calculus. We'll start with differential calculus since it makes integral calculus much easier to understand.
+    Differential calculus is the study of rates of change. We are often interested not only in the current state of something, but also its future state. Imagine you're driving to work and your fuel gauge is near E.
+    If we ignore its rate of change, it being near E is fine. Nothing will go wrong until it's at E, however you're clearly interested in the fact that it is steadily dropping towards E as you drive.
+
+    <p> Of course you can understand that situation without calculus, you just need to know the mileage of your car, but for more complex situations it is absolutely the right tool.
+    Going back to our rocket example, then the rocket becomes lighter as it uses fuel, and lighter things accelerate easier. The correct amount of fuel to pack for a mission is therefore not simple, as the 'mileage' of your rocket now depends on the fuel level itself. </p>
+
+    <h3>Straight Lines</h3>
+    I want to take a slight detour before I introduce differentiation, the main operation of differential calculus. The equation of a straight line is
+    <pre>y = mx + c,</pre>
+    where <in>m</in> is the gradient, defining how steep the line is, and <in>c</in> is the intercept, defining where the line touches the y-axis at <in>x=0</in>. Here's a graph of <in>y = 5x + 2</in>:
+
+<figure>
+  <img src="./CalculusFig1.png" alt="A straight line with gradient 5 and intercept 2" width="600">
+</figure>
+
+    "Gradient" is another word for the rate of change. If <in>x</in> increases by <in>1</in>, <in>y</in> increases by <in>m</in>. If <in>x</in> decreases by <in>5</in>, <in>y</in> decreases by <in>5m</in>. We say that the rate of change of <in>y</in> with respect to <in>x</in> is <in>m</in>.
+    If we're told a line passes through two points, let's say <in>(1,2)</in> and <in>(4,5)</in>, how do we calculate the line through it?
+    Well, the difference in <in>x</in> values is <in>3</in>, so the difference in <in>y</in> values must be <in>3m</in>. We can see that the difference in <in>y</in> values is also <in>3</in> though, so <in>3m = 3</in> meaning <in>m = 1</in>. If we were to decrease <in>x</in> by <in>1</in>, <in>y</in> would decrease by <in>1</in>, so at <in>x = 0</in>, <in>y</in> would be <in>1</in>. The equation is 
+    <pre>y = x + 1.</pre>
+
+    In general, if we have two points <in>(x₁,y₁)</in> and <in>(x₂,y₂)</in>, we can see that <in>y₂ - y₁ = m(x₂ - x₁)</in>, following the same logic as above. This means that
+    <pre>    x₂-x₁ 
+ m=╶─────╴.
+    y₂-y₁ </pre>
+
+    The intercept <in>c</in> is then <in>y₁ - mx₁</in>, but <in>m</in> is what we care about here.
+
+    <h3>Nearly Everything's a Straight Line Close Up</h3>
+    This is really the key to differential calculus. If you take a function, and keep zooming in on a point, it will usually look like a straight line. Here's a horrible looking example, the function
+    <pre>    ⎛  1  ⎞
+ cos⎜╶───╴⎟
+    ⎝ 1-x ⎠.</pre>
+    I've drawn it on the interval <in>x=0</in> to <in>x=1.0</in>, and we're zooming in on <in>x=0.99</in>: 
+<figure>
+  <img src="./CalculusFig2.png" alt="A series of 6 figures, each 10x more zoomed in than the last, showing how the function eventually straightens out" width="800">
+</figure>
+    See? It's just a straight line after all. We had to zoom in 100,000x, but that's not important, the only important thing is that there's a zoom level where it looks straight.
+    
+    <p>A quick note on notation, I could've written "<in>x∈[0,1.0)</in>", where the symbol "<in>∈</in>" means "is in", and "<in>[0,1.0)</in>" means "the interval (set) of all numbers between <in>0</in> and <in>0.99</in>, including <in>0</in> but not <in>1.0</in>". I've also seen "<in>[0,1.0[</in>" but as a programmer that makes me even more uncomfortable than the other one. </p>
+
+    <p>To be clear, not everything becomes a straight line up close. Here's the absolute value function, <in>y = |x|</in>, at <in>x=0</in>:</p>
+<figure>
+  <img src="./CalculusFig3.png" alt="y = |x|, zoomed in, showing it doesn't flattens out" width="600">
+</figure>
+     No matter how much you zoom in on <in>x=0</in>, it'll always look like two separate straight lines. How do we know if this is case without actually zooming in until we're convinced? It's time to introduce the tools of calculus.
+
+    <h3>The Limit</h3>
+    Here's what we've been building up to: how do we measure the gradient of a function that isn't a straight line? The answer I've been alluding is to zoom in until it looks like a straight line, and then use the method for a straight line. Let's make this a bit more mathematical.
+    <p>We have a function, <in>f(x)</in>, and we want to know its gradient at a given point <in>x</in>. The coordinate of this point is <in>(x, f(x))</in>. We need a second point, so we take a step to a nearby point <in>x+h</in>, where <in>h</in> is the step size. This gives us a second point <in>(x+h, f(x+h))</in>. Our calculation for straight lines then gives us
+
+    <pre>    f(x+h)-f(x)   f(x+h)-f(x) 
+ m=╶───────────╴=╶───────────╴.
+      (x+h)-x          h      </pre>
+    This is called the Difference Quotient. If we enforce <in>h</in> to be positive, this is also called the Forwards Difference, but we'll allow negative <in>h</in>.
+    Take a look at the first figure again - zooming in means choosing two points that are closer to each other. It means choosing a smaller step size, <in>h</in>. Let's take <in>f(x) = x²</in>, and try finding the gradient at <in>x = 1</in>. Here's a figure testing a few values of <in>h</in>:
+
+    As we make <in>h</in> smaller, it seems our gradient gets closer to <in>2</in>. We can show this with some simple algebra:
+<pre>
+    f(x+h)-f(x)   (x+h)²-x²   x²+2xh+h²-x²   2xh+h²      
+ m=╶───────────╴=╶─────────╴=╶────────────╴=╶──────╴=2x+h.
+         h            h            h           h         
+</pre>
+   We can see that at <in>x=1, m = 2+h</in>. Clearly, as we make <in>h</in> smaller, <in>m</in> gets closer to <in>2</in>. We can actually see that for any <in>x</in>, <in>m</in> gets closer to <in>2x</in>.
+   Remember though, we cannot choose <in>h = 0</in> because that means dividing by <in>0</in> in the difference quotient, and dividing by <in>0</in> is not allowed. This would represent measuring the gradient by comparing a point with itself, which doesn't make sense.
+   <p> We will now define the limit. There's three parts to a limit. </p>
+   <ol>
+     <li> Part 1 is our claim. We believe that as we make <in>h</in> smaller, <in>m</in> gets closer to <in>2</in>. </li>
+     <li> Part 2 is the challenge to the claim. Suppose I am unconvinced. "No way", I say. "Here's a super small number, <in>ϵ</in> (epsilon), I bet it doesn't stay closer than that as we keep zooming in" </li>
+     <li> Part 3 is the response to the challenge. You must show me that if we restrict <in>h</in> to be small enough, then <in>m</in> is always within a distance <in>ϵ</in> from <in>2</in>.</li>
+   </ol>
+   If, for any challenge <in>ϵ</in>, you can respond to the challenge, then the limit is proven, and we can say
+
+<pre>
+ lim 2+h = 2.
+<font size="3.5">  </font><sup>h⭢0</sup>
+</pre>
+This reads as "The limit of <in>2+h</in>, as <in>h</in> approaches <in>0</in>, is <in>2</in>".
+
+Let's set up a bit of notation and then rewrite this definition with that notation before we prove it for real. 
+<p>I mentioned the absolute value function, <in>|x|</in>, earlier. If <in>x</in> is negative, then <in>|x| = -x</in>, otherwise <in>|x| = x</in>. It takes a number and makes it positive. <in>|x|</in> can be seen as the distance of <in>x</in> from <in>0</in>.
+<in>|x - a|</in> then gives the distance of <in>x</in> from <in>a</in> rather than <in>0</in>. </p>
+
+<p>Let's also introduce a new Greek letter, <in>δ</in> (delta). It is typical to use this letter in the "response to the challenge" section. </p>
+
+Now let's redefine the limit, with our new notation and in more general language:
+
+   <ol>
+     <li> Part 1 is our claim. We believe the limit of some function <in>g(h)</in> as <in>h ⭢ k</in> is <in>L</in></li>
+     <li> Part 2 is the challenge. Let <in>ϵ > 0</in>, the challenge is to find an <in>h</in> small enough that <in>|g(h) - L| < ϵ</in> </li>
+     <li> Part 3 is the response to the challenge. You must find some <in>δ</in>, depending on <in>ϵ</in>, such that <in>|g(h) - L| < ϵ</in> whenever <in>|h-k|<δ</in></li>
+   </ol>
+
+Now let's prove that the gradient of <in>f(x) = x²</in> is <in>2x</in>.
+<ol><li> We believe the limit of the gradient function <in>m(h) = 2x+h</in> as <in>h ⭢ 0</in> is <in>2x</in></li>
+     <li> Let <in>ϵ > 0</in>, the challenge is to find an <in>h</in> small enough that <in>|m(h) - 2x| < ϵ</in> </li>
+     <li> We must find some <in>δ</in> such that <in>|m(h) - 2x| < ϵ</in> whenever <in>|h|<δ</in></li>
+     <li> <in>|m(h) - 2x| = |2x + h - 2x| = |h|</in>, so we want <in>|h| < ϵ</in> whenever <in>|h| < δ</in>. Choosing <in>δ = ϵ</in> works.</li></ol>
+
+
+Proof complete! We have proved that the gradient of <in>x²</in> is <in>2x</in>. 
+<h3>The Derivative</h3>
+Here's our final bit of new notation for now. We define the derivative of a function <in>f(x)</in> as
+<pre>
+  df      f(x+h)-f(x) 
+ ╶──╴=lim╶───────────╴.
+  dx  <sup>h⭢0</sup>      h      
+</pre>
+
+This is often also written as <in>f'(x)</in>, or for functions where the time is the input you may see <in>ḟ(t)</in>. For <in>f(x) = x²</in>, we've proved that <in>f'(x) = 2x</in>, and <in>f'(1) = 2</in> as we suspected.
+
+<p>You'll notice that it's often necessary to manipulate the expression in the limit until we're able to guess what the limit is. On the next page, we'll develop some new tools that let us calculate limits from ones we've already proven.</p>
+
+<h3>Continuity</h3>
+While we're here, we can define a property called continuity. A function <in>f(x)</in> is continuous at a point <in>a</in> if
+<pre>
+ lim f(x+a)-f(x) = 0.
+ <sup>x⭢a</sup>
+</pre>
+A function is continuous on an interval if it's continuous at every point in that interval. 
+This property is often described as "being able to draw the function without lifting your pen off the page". This is true, but doesn't quite capture the importance of continuity.
+Let's take a continuous function, <in>f(x) = |x|</in>, and remove the point at <in>x = 0</in> to create a new function. Here's a graph:
+
+<figure>
+  <img src="./CalculusFig4.png" alt="|x| but with the point at x=0 missing, to show two disconnected lines." width="600">
+</figure>
+
+For a function to be contiuous it means that there is a way to fill in the missing point so that it bridges the two disconnected pieces of the function, and that the function takes precisely that value at that point. The missing point above is precisely the limit of <in>f(x)</in> as <in>x⭢0</in>, and is 0.
+Now let's look at the derivative of <in>f(x)</in>:
+<figure>
+  <img src="./CalculusFig5.png" alt="The sign function, x/|x|, which isn't defined at 0" width="600">
+</figure>
+Below <in>x=0</in>, the function is <in>f(x) = -x</in> so the gradient is <in>-1</in>. Above <in>x=0</in>, <in>f(x) = x</in>, so the gradient is <in>1</in>. At x = 0 though, the derivative is undefined as there is no number that satisfies the limit in the definition.
+This means that <in>f'(x)</in> has a missing value at <in>x=0</in>, and you can see from the graph that there's no way of filling in the value such that the two pieces are connected. It is not continuous at <in>x=0</in>. It is still continuous at all other points though.
+
+<p>I will talk about continuity a bit more rigorously later, since we'll need it for integral calculus, but having the intuitive idea will do for now.</p>
+
+<h3>Optimisation</h3>
+A function <in>f(x)</in> will take its maximum or minimum (or just "extreme") values when <in>f'(x) = 0</in>. Why is this? Well, imagine that <in>f'(0) = m</in>, where <in>m>0</in>.
+If we take a small enough step, <in>h > 0</in>, then we expect <in>f(h)</in> to be roughly <in>f(0) + mh</in>. This is us saying that if you zoom in far enough on <in>f(0)</in>, it looks like a straight line with gradient <in>m</in>. 
+Since <in>m > 0</in> and <in>h > 0</in>, then <in>f(h) ≈ f(0) + mh > f(0)</in>. Similarly, <in>f(-h) ≈ f(0) - mh < f(0)</in>. Clearly <in>f(0)</in> is not a maximum or minimum, because we just found both a larger and smaller point.
+
+<p>This is not a proof, mind you, because of my use of the "approximately equal" sign <in>≈</in>, but we need to set up some more tools before we can prove this one for real.</p>
+
+
+<h3>Exercises</h3>
+If you want some excercises, try finding the derivative of <in>f(x) = mx + c</in> using the method of limits. You already know the answer is <in>f'(x) = m</in> since it's just a straight line.
+<p>As a harder exercise, try finding the derivative of <in>f(x) = x³ - x</in>, given that <in>(x + h)³ = x³ + 3hx² + 3h²x + h³</in>. The answer is <in>f'(x) = 3x² - 1</in>. </p>
+<p>Continuing from the last example, find the extreme points of <in>f(x)</in> by solving the quadratic equation <in>f'(x) = 0</in>. Here's a graph of the answer: </p>
+
+<figure>
+  <img src="./CalculusFig6.png" alt="The function  x³ - x, with the extremes points plotted" width="600">
+</figure>
+
+
+
+<hr>
+    <footer>
+      <p>Website source code on <a href="https://github.com/Asa-Hopkins/Asa-Hopkins.github.io/tree/main">GitHub</a>.</p>
+    </footer>
+  </body>
+</html>
+
+<!-- I've retained the copyright notice from the original website I forked-->
+<!-- Copyright (C) 2021  Guilherme Pangnotta -->
+<!-- License: https://github.com/setetres/evenbettermotherfuckingwebsite/blob/master/LICENSE -->
