@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0"/>
+    <title>Asa Hopkins' Website</title>
+    <meta name="description" content="A bunch of random knowledge across STEM"/>
+    <link rel="canonical" href=""/>
+    <link rel="stylesheet" href="../style.css">
+
+  </head>
+  <body>
+    <nav>
+      <a href="../index.html">Home</a> |
+      <a href="../posts.html">Posts</a>
+    </nav>
+    <hr>
+
+    <header>
+      <h2>Number Systems</h2>
+    </header>
+
+    <h3>Motivation</h3>
+    In the previous two posts I've introduced two important areas of mathematics, calculus and linear algebra. Speaking very broadly, calculus lets us set up systems of equations that describe something we're interested in, and linear algebra lets us solve them.
+    The main issue is that we can very easily encounter systems of 100s of equations, and as I said on that page, we should delegate the job to a computer. Computers are machines designed for arithmetic, but the way they do calculations has some limitations that should be kept in mind when designing algorithms.
+    Our implementation of the Gaussian Elimination algorithm failed in one case, not because the algorithm was wrong, but because we ignored the computer's limited number of digits. On this page we'll look at how numbers are represented in computers.
+
+    <h3>Base 10</h3>
+    Our normal number system is called base 10 (or decimal) because there's 10 unique symbols that we use for counting. These are 0,1,2,3,4,5,6,7,8 and 9. I am hoping you are familiar with these.
+    Imagine you have a set of wheels with these symbols on, like this combination lock:
+
+<p><figure>
+  <img src="./lock.jpg" alt="A photo of a combination lock showing 100" width="600">
+  <figcaption>Source: <a href="https://commons.wikimedia.org/wiki/File:Combination-lock-254923_1920.jpg">https://commons.wikimedia.org/wiki/File:Combination-lock-254923_1920.jpg</a></figcaption>
+</figure><p></p></p>
+
+    <p>To count up from 0, you rotate the first wheel (from the right), one number at a time. When you add 1 to 9, you loop back around to 0, and you then rotate the next wheel one time to get 10. </p>
+    
+    <h3>Base 5</h3>
+    <p>The key thing is that this same procedure works no matter how many symbols we're using for counting. Let's only allow the symbols 0,1,2,3 and 4. There are 5 symbols, so this is base 5. Here's a table showing counting in base 5 vs base 10, where I'll add the symbol <in>₅</in> to the end of the base 5 numbers. Remember that both sides are the same number, just written in different ways.
+
+<table style="width:300px;text-align: center;table-layout: fixed;">
+  <tr>
+    <th>Base 5</th> <th>Base 10</th>
+  </tr>
+
+  <tr><td>0₅</td><td>0</td></tr>
+  <tr><td>1₅</td><td>1</td></tr>
+  <tr><td>2₅</td><td>2</td></tr>
+  <tr><td>3₅</td><td>3</td></tr>
+  <tr><td>4₅</td><td>4</td></tr>
+  <tr><td>10₅</td><td>5</td></tr>
+  <tr><td>11₅</td><td>6</td></tr>
+  <tr><td>12₅</td><td>7</td></tr>
+  <tr><td>13₅</td><td>8</td></tr>
+  <tr><td>14₅</td><td>9</td></tr>
+  <tr><td>20₅</td><td>10</td></tr>
+
+</table>
+   <p> Just as in base 10, when we roll back over from the last symbol back to 0, we increment the next column. Since base 5 has half as many symbols as base 10, this happens twice as soon. </p>
+    
+    <h3>Base 2</h3>
+    Base 2, also called binary, means we're restricted to just two symbols, 0 and 1. This is how numbers are represented in computers because it simplifies the design of circuits. I won't go into circuit design on this page, but I will show later how binary can be simpler.
+    Here's another table, this time including base 2:
+
+<table style="width:450px;text-align: center;table-layout: fixed;">
+  <tr>
+    <th>Base 2</th> <th>Base 5</th> <th>Base 10</th>
+  </tr>
+
+  <tr><td>0₂</td><td>0₅</td><td>0</td></tr>
+  <tr><td>1₂</td><td>1₅</td><td>1</td></tr>
+  <tr><td>10₂</td><td>2₅</td><td>2</td></tr>
+  <tr><td>11₂</td><td>3₅</td><td>3</td></tr>
+  <tr><td>100₂</td><td>4₅</td><td>4</td></tr>
+  <tr><td>101₂</td><td>10₅</td><td>5</td></tr>
+  <tr><td>110₂</td><td>11₅</td><td>6</td></tr>
+  <tr><td>111₂</td><td>12₅</td><td>7</td></tr>
+  <tr><td>1000₂</td><td>13₅</td><td>8</td></tr>
+  <tr><td>1001₂</td><td>14₅</td><td>9</td></tr>
+  <tr><td>1010₂</td><td>20₅</td><td>10</td></tr>
+
+</table>
+    <p>You can see that in base 2, the digits roll back around to 0 much faster, and we end up needing more digits to represent the same numbers. </p>
+
+    <h3>Bases Above 10</h3>
+    Since we don't have enough symbols, we borrow from the alphabet. For example, base 16 uses 0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F as our 16 symbols. Beyond a certain point, it becomes simpler to go back the wheel idea, and just write numbers larger than 10 on the wheels. In software versioning for example, you'll often see
+    something like "v1.26.127". This is the 127th minor revision of the 26th major revision of version 1. The decimal points are separating the different wheels of the number, rather than the usual meaning of a decimal point. This can look a bit odd, "v1.10.0" is newer than "v1.9.0", because it's the 10th major revision.
+
+    <h3>Column Values and Conversions</h3>
+    We can't start from 0 and count up every time we want to convert a number between number bases. Thankfully there's a simpler way using column values. In base <in>n</in>, each column is worth <in>n</in> times the previous one.
+    This is familiar from base 10, the units column is worth 1, the tens is worth 10, the hundreds is worth 100 and so on. The units column is worth 1 in every base thankfully, so the column values in binary are as follows:
+
+<table style="width:200px;text-align: center;table-layout: fixed;">
+  <tr>
+    <th>32</th> <th>16</th> <th>8</th> <th>4</th> <th>2</th> <th>1</th> <th>Base 10</th>
+  </tr>
+
+  <tr><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>6</td></tr>
+  <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>12</td></tr>
+  <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>21</td></tr>
+  <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>63</td></tr>
+
+</table>
+
+    I've included some examples of numbers written in binary. The algorithm for converting from base <in>n</in> to base 10 is simple:
+    <ol>
+      <li>Let <in>s = 0</in>, representing the sum so far. Let <in>d = 0</in> be the digit we're working on, starting with the units column.</li>
+      <li>Add the column value times digit <in>d</in>'s value to <in>s</in>. The column value is <in>nᵈ</in>. </li>
+      <li>Add <in>1</in> to <in>d</in>. If there are more digits to go, go back to Step 2. Else, we're done. </li>
+    </ol>
+
+    Try this on the examples in the table above.
+
+    <p>The algorithm for converting from base 10 to base <in>n</in> is slightly more complex:</p>
+
+    <ol>
+      <li>Let <in>x</in> be the number to convert. We need to figure out the number of digits in the result. Start at <in>d = 1</in>. </li>
+      <li>Add <in>1</in> to <in>d</in> until the column value is greater than or equal to <in>x</in>, so until <in>nᵈ ≥ x</in> </li>
+      <li><in>d</in> is the number of digits in our result. </li>
+      <li>Subtract <in>1</in> from <in>d</in>. The digit in the <in>d</in>'th column is the largest multiple of <in>nᵈ</in> that's less than or equal to <in>x</in></li>
+      <li>Subtract <in>nᵈ</in> times the digit from <in>x</in></li>
+      <li>If <in>d</in> is 0, we're done. Else, go back to Step 4. </li>
+    </ol>
+
+    Once again, try this on the examples above. I have written some Python code for conversions between binary and decimal <a href="./NumberSystems.py">here</a>.
+
+    <p>Remember: a computer's native representation is binary, not base 10. When you type the number "63" into your calculator, it uses the <em>first</em> algorithm to convert it to binary, and the <em>second</em> algorithm to convert the answer back to display to you. </p>
+
+    <h3>Left and Right Shift</h3>
+    In base 10, it's easy to multiply or divide by 10. To multiply by 10, you move all the digits along to the left. Dividing by 10 is the same.
+    <br> In base <in>n</in>, multiplying and dividing by <in>n</in> is the same process. We call this left shifting and right shifting.
+
+    <h3>Nomenclature</h3>
+    Binary digits are often called "bits", so <in>1010₂</in> is a 4-bit number. 4 bits are a nibble, 8 bits are a byte. A word is usually 16 bits, but sometimes not. 16 bits should be a krunch, surely? I will only actually use "bits" and "bytes" in general.
+
+    <h3>Working with limited digits</h3>
+    Computers only have a finite amount of memory, and they must ration it appropriately across all the tasks we give it. Modern machines usually allocate 64-bits to a number, but can use 32, 16 and 8 both to save space and maintain compatibility with older machines.
+    
+    <p>Let's focus on an 8-bit machine for now. These are still in modern use, my Ti-84 calculator is an 8-bit machine, and it gave me an unfair but legal advantage in my A-levels.
+    The smallest number that can be represented in 8 bits is <in>0</in>, and largest number is <in>1111111₂ = 255</in>. If you ask our computer to add <in>1</in> to this, it will calculate the answer is <in>100000000₂ = 256</in>, but can only store the lower
+    8 digits, giving <in>0</in>. This is called an integer overflow. When this happens, the computer flags it up so it can be handled, but it isn't always a bad thing.
+    </p>
+
+    <h3>Two's Complement</h3>
+    This overflow behaviour can be used to represent negative numbers in binary. Look at what happened above, we added a number to <in>1</in> and got <in>0</in>. The number <in>255</in> acted like <in>-1</in>.
+    In fact, with only 8 bits, then any number <in>x</in> acts the same as <in>x + 2⁸ = x + 256</in> when adding, due to the overflow. The difference is that, for negative numbers, <in>x + 256</in> is actually in the range of values we can represent. Here's an example: <in>-5</in> acts the same as <in>2⁸ - 5 = 251</in>.
+    Add <in>251</in> to <in>100</in> to get <in>351</in>, which is <in>351 - 256 = 95</in> after accounting for the overflow. It acted like <in>-5</in>, as expected. This is called Two's Complement, and it lets us treat numbers above <in>2⁷</in> as negative numbers if we choose.
+
+    <h3>Standard Form</h3>
+    Going back to base 10 for a moment, we often only care about the few most significant digits of a number. Imagine if your bank account said <in>£1,230,001.50</in>, you probably wouldn't care too much about the <in>£1.50</in> right?
+    However if your bank account only said <in>£1.50</in>, suddenly it is much more important to you, even though it's value hasn't changed. When taking measurements of something, often only the first few digits are accurate too, so there's no point quoting more digits.
+    Standard form is a way of writing numbers that takes this into account. To write a number in standard form, left or right shift it so that it's between 1 and 10, and then write the number of shifts you did in the exponent like this:
+<pre>
+£1,230,001.50 = £1.2300015×10⁶ = £1.230×10⁶ (to 4 significant figures)
+</pre>
+
+    We call the shifted part of the number the mantissa, so <in>1.230</in> is the mantissa of the number above. Left shifts are counted as negative, so a number like <in>0.0023</in> would be written like 
+<pre>
+0.0023 =2.3×10⁻³
+</pre>
+
+    The advantage of standard form is that we don't have to write any extra 0's at the start or end, and also we can round to a given number of significant figures more easily.
+
+    <h3>Binary Standard Form (AKA Floating Point)</h3>
+    We do a similar thing in binary to let us represent a wider range of numbers. This time, we shift the number so it's between <in>1</in> and <in>2</in>, and we also dedicate the first bit to saying whether the number is positive or negative, rather than Two's Complement.
+    This gives us three parts of the number, the sign, the exponent, and the mantissa. For a 32-bit floating point number (or just "float"), here is the standard way of allocating the bits:
+
+
+<p><figure>
+  <img src="./32.png" alt="A photo showing the 32-bit floating point standard" width="600">
+  <figcaption>Source: <a href="https://commons.wikimedia.org/wiki/File:Float_example.svg">https://commons.wikimedia.org/wiki/File:Float_example.svg</a></figcaption>
+</figure> <p> </p> </p>
+
+    For a 64-bit float, here is the allocation:
+
+<p><figure>
+  <img src="./64.png" alt="A photo showing the 64-bit floating point standard"  width="600">
+  <figcaption>Source: <a href="https://en.wikipedia.org/wiki/File:IEEE_754_Double_Floating_Point_Format.svg">https://en.wikipedia.org/wiki/File:IEEE_754_Double_Floating_Point_Format.svg</a></figcaption>
+</figure> 
+<p> </p> </p>
+
+    The important thing to remember is that these parts are all finite. Once numbers go too large, the exponent overflows and the computer will flag it as infinite. Once the exponent overflows the computer will flag it as 0.
+
+<hr>
+    <footer>
+      <p>Previous: <a href="../Maths/Calculus.html">Calculus</a> <span style="float:right">Next: None (yet)</span> </p>
+      <p>Website source code on <a href="https://github.com/Asa-Hopkins/Asa-Hopkins.github.io/tree/main">GitHub</a>.</p>
+    </footer>
+  </body>
+</html>

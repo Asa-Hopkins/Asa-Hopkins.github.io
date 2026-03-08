@@ -82,7 +82,7 @@
   6      6 
 </pre>
 
-    Now our system is as good as solved. Rescale the second equation to get <in>y = 1</in>, and then substitute that into the first equation to get <in>x = 1</in> too. This technique is called back-substitution.
+    Now our system is as good as solved. Re-scale the second equation to get <in>y = 1</in>, and then substitute that into the first equation to get <in>x = 1</in> too. This technique is called back-substitution.
 
     <p> Simple enough. There are other manipulations, such as moving adding/subtracting terms to move them from the LHS to the RHS, or when we used substitution to find <in>x</in> using <in>y</in>, but this is never strictly necessary, despite being a common method taught. It is useful for the following proof though. </p>
     <p> As a general rule, a system of n variables needs n equations to be solved. To show this, you can manipulate the first equation to 
@@ -215,7 +215,7 @@
 
     <h3> Polynomial Fitting </h3>
 
-    <p> This may seem complicated, but it really does just boil down to simultanous linear equations. Let's take a quadratic function for now:
+    <p> This may seem complicated, but it really does just boil down to simultaneous linear equations. Let's take a quadratic function for now:
     <pre>p(x) = ax²+bx+c</pre>
     <p> This may look non-linear, but <in>a</in>, <in>b</in> and <in>c</in> are our unknown variables, and it is perfectly linear in those. Let's say we want <in>p(x) = sin(x)</in> when <in>x = -1</in>, <in>0</in> and <in>1</in>. This gives the equations:</p>
     <pre>p(-1) = a - b + c = sin(-1) = -sin(1)
@@ -257,7 +257,7 @@ f = -4.99999992e-01
 g =  1.00000000e+00
 </pre>
 
-<p>If I drew the graph of this <in>p(x)</in> against the original function, it'd be indistiguishable. Instead, I've plotted the difference between them. I've also plotted the best possible polynomial for comparison, which is found by choosing better sampling points. Bad sampling points can break the fit entirely, check out <a href="https://en.wikipedia.org/wiki/Runge%27s_phenomenon">Runge's Phenomenon</a> for an example. </p>
+<p>If I drew the graph of this <in>p(x)</in> against the original function, it'd be indistinguishable. Instead, I've plotted the difference between them. I've also plotted the best possible polynomial for comparison, which is found by choosing better sampling points. Bad sampling points can break the fit entirely, check out <a href="https://en.wikipedia.org/wiki/Runge%27s_phenomenon">Runge's Phenomenon</a> for an example. </p>
 
 
 <figure>
@@ -266,11 +266,8 @@ g =  1.00000000e+00
 
 <hr>
     <footer>
+      <p><span style="float:right">Next: <a href="./Calculus.html">Calculus </a></span> </p>
       <p>Website source code on <a href="https://github.com/Asa-Hopkins/Asa-Hopkins.github.io/tree/main">GitHub</a>.</p>
     </footer>
   </body>
 </html>
-
-<!-- I've retained the copyright notice from the original website I forked-->
-<!-- Copyright (C) 2021  Guilherme Pangnotta -->
-<!-- License: https://github.com/setetres/evenbettermotherfuckingwebsite/blob/master/LICENSE -->
