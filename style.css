@@ -9,7 +9,13 @@ nav a { color: #000000; text-decoration: none; }
 nav a:hover { text-decoration: underline; }
 
 /* Add a webfont for consistent mobile experience. */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap');
+@font-face {
+    font-family: "Noto Sans Mono";
+    src: url("NotoSansMono.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
 pre {
     font-size: 20px;
@@ -25,6 +31,12 @@ pre {
     /* Stop iOS Safari from auto-scaling text inside <pre> blocks.*/
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+}
+
+/* Decrease font size on small screens */
+@media (max-width: 640px) {
+    pre { font-size: 13px; padding: 10px; }
+    body { max-width: 92%; margin: 3% auto; }
 }
 
 /* Adds extra space between the list items */
