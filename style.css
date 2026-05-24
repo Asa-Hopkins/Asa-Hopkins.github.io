@@ -11,7 +11,7 @@ nav a:hover { text-decoration: underline; }
 /* Add a webfont for consistent mobile experience. */
 @font-face {
     font-family: "Noto Sans Mono";
-    src: url("NotoSansMono.woff2") format("woff2");
+    src: url("NotoSansMono-Regular.woff2") format("woff2");
     font-weight: normal;
     font-style: normal;
     font-display: swap;
