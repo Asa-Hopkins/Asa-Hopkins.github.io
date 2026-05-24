@@ -110,7 +110,7 @@
 
 <pre>
  lim 2+h = 2.
-<font size="3.5">  </font><sup>h⭢0</sup>
+<font size="3.5">  </font><sup>h<arrow>→</arrow>0</sup>
 </pre>
 This reads as "The limit of <in>2+h</in>, as <in>h</in> approaches <in>0</in>, is <in>2</in>".
 
@@ -123,13 +123,13 @@ Let's set up a bit of notation and then rewrite this definition with that notati
 Now let's redefine the limit, with our new notation and in more general language:
 
    <ol>
-     <li> Part 1 is our claim. We believe the limit of some function <in>g(h)</in> as <in>h ⭢ k</in> is <in>L</in></li>
+     <li> Part 1 is our claim. We believe the limit of some function <in>g(h)</in> as <in>h <arrow>→</arrow> k</in> is <in>L</in></li>
      <li> Part 2 is the challenge. Let <in>ϵ > 0</in>, the challenge is to find an <in>h</in> small enough that <in>|g(h) - L| < ϵ</in> </li>
      <li> Part 3 is the response to the challenge. You must find some <in>δ</in>, depending on <in>ϵ</in>, such that <in>|g(h) - L| < ϵ</in> whenever <in>|h-k|<δ</in></li>
    </ol>
 
 Now let's prove that the gradient of <in>f(x) = x²</in> is <in>2x</in>.
-<ol><li> We believe the limit of the gradient function <in>m(h) = 2x+h</in> as <in>h ⭢ 0</in> is <in>2x</in></li>
+<ol><li> We believe the limit of the gradient function <in>m(h) = 2x+h</in> as <in>h <arrow>→</arrow> 0</in> is <in>2x</in></li>
      <li> Let <in>ϵ > 0</in>, the challenge is to find an <in>h</in> small enough that <in>|m(h) - 2x| < ϵ</in> </li>
      <li> We must find some <in>δ</in> such that <in>|m(h) - 2x| < ϵ</in> whenever <in>|h|<δ</in></li>
      <li> <in>|m(h) - 2x| = |2x + h - 2x| = |h|</in>, so we want <in>|h| < ϵ</in> whenever <in>|h| < δ</in>. Choosing <in>δ = ϵ</in> works.</li></ol>
@@ -141,7 +141,7 @@ Here's our final bit of new notation for now. We define the derivative of a func
 <pre>
   df      f(x+h)-f(x) 
  ╶──╴=lim╶───────────╴.
-  dx  <sup>h⭢0</sup>      h      
+  dx  <sup>h<arrow>→</arrow>0</sup>      h      
 </pre>
 
 This is often also written as <in>f'(x)</in>, or for functions where the time is the input you may see <in>ḟ(t)</in>. For <in>f(x) = x²</in>, we've proved that <in>f'(x) = 2x</in>, and <in>f'(1) = 2</in> as we suspected.
@@ -152,7 +152,7 @@ This is often also written as <in>f'(x)</in>, or for functions where the time is
 While we're here, we can define a property called continuity. A function <in>f(x)</in> is continuous at a point <in>a</in> if
 <pre>
  lim f(x+a)-f(x) = 0.
- <sup>x⭢a</sup>
+ <sup>x<arrow>→</arrow>a</sup>
 </pre>
 A function is continuous on an interval if it's continuous at every point in that interval. 
 This property is often described as "being able to draw the function without lifting your pen off the page". This is true, but doesn't quite capture the importance of continuity.
@@ -162,7 +162,7 @@ Let's take a continuous function, <in>f(x) = |x|</in>, and remove the point at <
   <img src="./CalculusFig4.png" alt="|x| but with the point at x=0 missing, to show two disconnected lines." width="600">
 </figure>
 
-For a function to be continuous it means that there is a way to fill in the missing point so that it bridges the two disconnected pieces of the function, and that the function takes precisely that value at that point. The missing point above is precisely the limit of <in>f(x)</in> as <in>x⭢0</in>, and is 0.
+For a function to be continuous it means that there is a way to fill in the missing point so that it bridges the two disconnected pieces of the function, and that the function takes precisely that value at that point. The missing point above is precisely the limit of <in>f(x)</in> as <in>x<arrow>→</arrow>0</in>, and is 0.
 Now let's look at the derivative of <in>f(x)</in>:
 <figure>
   <img src="./CalculusFig5.png" alt="The sign function, x/|x|, which isn't defined at 0" width="600">

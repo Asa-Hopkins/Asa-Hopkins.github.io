@@ -67,3 +67,8 @@ in {
     padding: 2px 4px;
     border-radius: 3px;
 }
+
+/* The arrow symbol is drawn too low */
+arrow {
+    vertical-align: 0.15em;
+}
